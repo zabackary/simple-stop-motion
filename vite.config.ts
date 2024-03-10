@@ -9,4 +9,5 @@ export default defineConfig({
       localsConvention: "camelCaseOnly",
     },
   },
+  base: "/simple-stop-motion",
 });
