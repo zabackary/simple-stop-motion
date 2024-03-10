@@ -45,6 +45,8 @@ export function App({ backend }: { backend: VideoBackend }) {
 
   const render = async () => {
     const fps = parseInt(prompt("how many frames per second?") ?? "8");
+    const width = parseInt(prompt("what width?") ?? "1600");
+    const height = parseInt(prompt("what height?") ?? "900");
 
     backend.clips = [
       new ImageSequenceClip(
@@ -80,8 +82,8 @@ export function App({ backend }: { backend: VideoBackend }) {
         start: 0,
         fps: 30,
         length: (backend.resources.length / fps) * 1e6,
-        width: 1600,
-        height: 900,
+        width,
+        height,
       },
       (finishFraction) => {
         setExportStatus(Math.ceil(finishFraction * 100));
