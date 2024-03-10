@@ -13,6 +13,8 @@ export function App({ backend }: { backend: VideoBackend }) {
     backend.clips.map((clip) => clip.id)
   );
 
+  const [exportStatus, setExportStatus] = useState(0);
+
   const removeResource = (id: number) => {
     setResources(resources.filter((resource) => resource !== id));
     backend.removeResourceById(id);
@@ -53,8 +55,11 @@ export function App({ backend }: { backend: VideoBackend }) {
           posWidth: 1,
           renderLength: (backend.resources.length / fps) * 1e6,
           renderStart: 0,
+          rotation: 180,
         },
-        backend.resources as ImageResource[]
+        (backend.resources as ImageResource[]).sort((a, b) =>
+          a.getDisplayName().localeCompare(b.getDisplayName())
+        )
       ),
     ];
 
@@ -69,13 +74,19 @@ export function App({ backend }: { backend: VideoBackend }) {
       ],
     });
     const writable = await fileHandle.createWritable();
-    await backend.renderToWritableStream(writable, {
-      start: 0,
-      fps: 30,
-      length: (backend.resources.length / fps) * 1e6,
-      width: 1600,
-      height: 900,
-    });
+    await backend.renderToWritableStream(
+      writable,
+      {
+        start: 0,
+        fps: 30,
+        length: (backend.resources.length / fps) * 1e6,
+        width: 1600,
+        height: 900,
+      },
+      (finishFraction) => {
+        setExportStatus(Math.ceil(finishFraction * 100));
+      }
+    );
     writable.close();
   };
 
@@ -85,6 +96,7 @@ export function App({ backend }: { backend: VideoBackend }) {
         <div class={classes.header}>
           <h1>Stop-motion builder</h1>
           <button onClick={render}>Render and download</button>
+          {exportStatus && <>rendering ({exportStatus}% finished)</>}
         </div>
         <div class={[classes.card, classes.resourcesCard].join(" ")}>
           <ResourcesList

@@ -55,7 +55,7 @@ export default function ResourcesList({
         // skip rendering, probably stale data
         if (!resource) return;
         return (
-          <div class={styles.item}>
+          <div class={styles.item} key={resourceId}>
             <div
               class={styles.itemPreviewContainer}
               style={{ backgroundImage: `url("${resource.getPreviewUrl()}")` }}

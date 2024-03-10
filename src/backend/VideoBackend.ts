@@ -61,7 +61,8 @@ export default class VideoBackend {
 
   async renderToWritableStream(
     writableStream: FileSystemWritableFileStream,
-    options: RenderOptions
+    options: RenderOptions,
+    statusCallback: (fraction: number) => void = () => {}
   ): Promise<void> {
     const totalFrames = options.fps * (options.length / 1e6);
     const frameLength = options.length / totalFrames;
@@ -80,9 +81,13 @@ export default class VideoBackend {
       height: options.height,
       bitrate: 10e6,
     };
+    let framesEncoded = 0;
     const encoder = new VideoEncoder({
       output: (chunk) => {
         webmWriter.addFrame(chunk);
+        framesEncoded++;
+        if (framesEncoded % options.fps === 0)
+          statusCallback(framesEncoded / totalFrames);
       },
       error: (e) => {
         console.error(e.message);

@@ -12,6 +12,8 @@ export interface ClipProperties {
   posWidth: number;
   /** In the range 0-1, where 1 is the full height and 0 is a height of 0 pixels. */
   posHeight: number;
+
+  rotation: number;
 }
 
 interface Clip {
@@ -78,6 +80,7 @@ abstract class Clip {
         this.properties.posLeft,
         this.properties.posTop
       );
+      canvas.rotate(this.properties.rotation);
       await this.simpleRender(
         canvas,
         time - this.properties.renderStart,
