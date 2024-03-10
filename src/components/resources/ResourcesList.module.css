@@ -1,0 +1,50 @@
+.item {
+  border-radius: 1em;
+  padding: 1em;
+  font-size: 16px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+.item-preview-container {
+  position: relative;
+  height: 48px;
+  border-radius: 4px;
+  aspect-ratio: 16 / 9;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.item-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.delete-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  position: absolute;
+  inset: 0;
+  background-color: #0003;
+  opacity: 0;
+  transition: opacity 200ms;
+  border: 0;
+  cursor: pointer;
+}
+.item:hover .delete-button {
+  opacity: 1;
+}
+.delete-button:hover {
+  background-color: #6009;
+}
+
+.name {
+  font-weight: bold;
+  font-size: 20px;
+}
+.description {
+  font-size: 16px;
+  color: #eee;
+}
