@@ -80,7 +80,9 @@ abstract class Clip {
         this.properties.posLeft,
         this.properties.posTop
       );
+      canvas.translate(width / 2, height / 2);
       canvas.rotate(this.properties.rotation);
+      canvas.translate(-width / 2, -height / 2);
       await this.simpleRender(
         canvas,
         time - this.properties.renderStart,

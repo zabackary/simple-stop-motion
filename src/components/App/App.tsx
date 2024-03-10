@@ -55,7 +55,7 @@ export function App({ backend }: { backend: VideoBackend }) {
           posWidth: 1,
           renderLength: (backend.resources.length / fps) * 1e6,
           renderStart: 0,
-          rotation: 180,
+          rotation: Math.PI,
         },
         (backend.resources as ImageResource[]).sort((a, b) =>
           a.getDisplayName().localeCompare(b.getDisplayName())
